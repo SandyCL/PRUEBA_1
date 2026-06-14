@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Control de gastos{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header class="site-header">
+        <nav class="nav">
+            <a class="brand" href="{{ url_for('main.index') }}">Control de gastos</a>
+            <div class="nav-links">
+                <a href="{{ url_for('main.index') }}">Inicio</a>
+                <a href="{{ url_for('main.gastos') }}">Gastos</a>
+                <a href="{{ url_for('main.nuevo_gasto') }}">Nuevo gasto</a>
+                <a href="{{ url_for('main.resumen') }}">Resumen</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

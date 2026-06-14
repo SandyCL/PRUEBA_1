@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Gastos | Control de gastos{% endblock %}
+
+{% block content %}
+<section class="page-title row-title">
+    <div>
+        <h1>Gastos registrados</h1>
+        <p>Consulta el historial completo de movimientos.</p>
+    </div>
+    <a class="button" href="{{ url_for('main.nuevo_gasto') }}">Nuevo gasto</a>
+</section>
+
+<section class="panel">
+    {% if gastos %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Categoria</th>
+                    <th>Descripcion</th>
+                    <th>Monto</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for gasto in gastos %}
+                <tr>
+                    <td>{{ gasto.fecha }}</td>
+                    <td>{{ gasto.categoria }}</td>
+                    <td>{{ gasto.descripcion }}</td>
+                    <td>₡{{ "{:,.2f}".format(gasto.monto) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No hay gastos registrados.</p>
+    {% endif %}
+</section>
+{% endblock %}
