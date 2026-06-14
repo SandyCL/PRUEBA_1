@@ -26,6 +26,9 @@ python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 python app.py
+```
+
+## Estructura general
 
 ```text
 control_gastos_flask/
@@ -49,5 +52,5 @@ control_gastos_flask/
         ├── gastos.html
         ├── nuevo_gasto.html
         ├── cobros_fijos.html
-        └── resumen.
+        └── resumen.html
 ```
