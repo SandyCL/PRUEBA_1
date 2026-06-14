@@ -128,6 +128,7 @@ p {
 .panel {
     padding: 20px;
     overflow-x: auto;
+    margin-bottom: 24px;
 }
 
 .panel-header {
@@ -155,6 +156,72 @@ p {
 
 .button:hover {
     background: var(--primary-dark);
+}
+
+.button-secondary {
+    background: #eef5f2;
+    color: var(--primary-dark);
+    border: 1px solid rgba(47, 125, 109, 0.25);
+}
+
+.button-secondary:hover {
+    background: #dfeee9;
+}
+
+.button-muted {
+    background: #eef0ef;
+    color: var(--text);
+}
+
+.button-muted:hover {
+    background: #dfe3e1;
+}
+
+.button-danger {
+    background: #b84a4a;
+}
+
+.button-danger:hover {
+    background: #963b3b;
+}
+
+.button-small {
+    min-height: 34px;
+    padding: 7px 10px;
+    font-size: 13px;
+}
+
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.filter-form {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.filter-actions,
+.form-actions,
+.table-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.filter-actions {
+    align-items: end;
+}
+
+.form-actions {
+    margin-top: 8px;
+}
+
+.message-panel {
+    max-width: 620px;
+    margin-top: 24px;
 }
 
 table {
@@ -225,7 +292,9 @@ select:focus {
     }
 
     .stats-grid,
-    .summary-layout {
+    .summary-layout,
+    .action-grid,
+    .filter-form {
         grid-template-columns: 1fr;
     }
 }

@@ -54,5 +54,5 @@ def resumen():
     )
 
 
-##Opcion de editar, eliminarm filtrar gastos
+
 

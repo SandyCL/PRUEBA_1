@@ -25,6 +25,20 @@
 
 <section class="panel">
     <div class="panel-header">
+        <h2>Acciones pendientes</h2>
+    </div>
+    <div class="action-grid">
+        <a class="button button-secondary" href="{{ url_for('main.gastos') }}">Filtrar gastos</a>
+        <a class="button button-secondary" href="{{ url_for('main.gastos') }}">Buscar descripcion</a>
+        <a class="button button-secondary" href="{{ url_for('main.resumen') }}">Totales por mes</a>
+        <a class="button button-secondary" href="{{ url_for('main.resumen') }}">Presupuesto mensual</a>
+        <a class="button button-secondary" href="{{ url_for('main.resumen') }}">Comparar meses</a>
+        <a class="button button-secondary" href="{{ url_for('main.resumen') }}">Promedio mensual</a>
+    </div>
+</section>
+
+<section class="panel">
+    <div class="panel-header">
         <h2>Ultimos gastos</h2>
         <a class="button" href="{{ url_for('main.nuevo_gasto') }}">Registrar gasto</a>
     </div>

@@ -12,6 +12,44 @@
 </section>
 
 <section class="panel">
+    <div class="panel-header">
+        <h2>Filtros y busqueda</h2>
+    </div>
+    <form class="filter-form" action="#" method="get">
+        <div>
+            <label for="fecha_inicio">Fecha inicio</label>
+            <input id="fecha_inicio" name="fecha_inicio" type="date">
+        </div>
+        <div>
+            <label for="fecha_fin">Fecha fin</label>
+            <input id="fecha_fin" name="fecha_fin" type="date">
+        </div>
+        <div>
+            <label for="categoria">Categoria</label>
+            <select id="categoria" name="categoria">
+                <option value="">Todas</option>
+                <option value="Alimentacion">Alimentacion</option>
+                <option value="Transporte">Transporte</option>
+                <option value="Servicios">Servicios</option>
+                <option value="Salud">Salud</option>
+                <option value="Educacion">Educacion</option>
+                <option value="Entretenimiento">Entretenimiento</option>
+                <option value="Otros">Otros</option>
+            </select>
+        </div>
+        <div>
+            <label for="descripcion">Descripcion</label>
+            <input id="descripcion" name="descripcion" type="search" placeholder="Buscar descripcion">
+        </div>
+        <div class="filter-actions">
+            <button class="button" type="button">Filtrar</button>
+            <button class="button button-secondary" type="button">Buscar</button>
+            <button class="button button-muted" type="reset">Limpiar</button>
+        </div>
+    </form>
+</section>
+
+<section class="panel">
     {% if gastos %}
         <table>
             <thead>
@@ -20,6 +58,7 @@
                     <th>Categoria</th>
                     <th>Descripcion</th>
                     <th>Monto</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -29,6 +68,12 @@
                     <td>{{ gasto.categoria }}</td>
                     <td>{{ gasto.descripcion }}</td>
                     <td>₡{{ "{:,.2f}".format(gasto.monto) }}</td>
+                    <td>
+                        <div class="table-actions">
+                            <button class="button button-small" type="button">Editar</button>
+                            <button class="button button-small button-danger" type="button">Eliminar</button>
+                        </div>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
