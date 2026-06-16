@@ -4,5 +4,4 @@ id,fecha,categoria,descripcion,monto
 3,2026-06-05,Servicios,Internet,28000.0
 4,2026-06-07,Entretenimiento,Cine,12000.0
 5,2026-06-10,Salud,Farmacia,9500.0
-b319243f-84f2-4661-90d6-2cef5f9943c0,2026-06-13,Alimentacion,frijoles y papas,3000.0
-1a318ef1-7986-4c7e-9001-e17f7c4cfa54,2026-06-27,Alimentacion,Food,1500.0
+6,2026-06-26,Servicios,frijoles,1500.0

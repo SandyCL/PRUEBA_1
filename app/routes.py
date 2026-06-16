@@ -5,6 +5,9 @@ from app.services import (
     cargar_gastos,
     crear_grafico_categorias,
     obtener_resumen,
+    eliminar_gasto,
+    actualizar_gasto
+    
 )
 
 
@@ -53,6 +56,58 @@ def resumen():
         grafico=grafico,
     )
 
+#######################################JEREMI
+
+@main.route("/gastos/eliminar/<int:id>")
+def eliminar_gasto_route(id):
+    eliminar_gasto(id)
+    return redirect(url_for("main.gastos"))
 
 
+@main.route("/gastos/editar/<int:id>", methods=["GET", "POST"])
+def editar_gasto(id):
+    gastos = cargar_gastos()
+    gasto = gastos[gastos["id"] == id].iloc[0]
 
+    if request.method == "POST":
+        actualizar_gasto(
+            id,
+            request.form["fecha"],
+            request.form["categoria"],
+            request.form["descripcion"],
+            request.form["monto"],
+        )
+        return redirect(url_for("main.gastos"))
+
+    return render_template("editar_gasto.html", gasto=gasto)
+
+
+from datetime import datetime
+@main.route("/gastos/filtrar")
+def filtrar_gastos_route():
+    gastos_df = cargar_gastos()
+    
+    fecha_inicio = request.args.get("fecha_inicio")
+    fecha_fin = request.args.get("fecha_fin")
+    categoria = request.args.get("categoria")
+
+    if fecha_inicio:
+        fecha_inicio_date = datetime.strptime(fecha_inicio, "%Y-%m-%d").date()
+        gastos_df = gastos_df[gastos_df["fecha"] >= fecha_inicio_date]
+
+    if fecha_fin:
+        fecha_fin_date = datetime.strptime(fecha_fin, "%Y-%m-%d").date()
+        gastos_df = gastos_df[gastos_df["fecha"] <= fecha_fin_date]
+
+    if categoria:
+        gastos_df = gastos_df[gastos_df["categoria"] == categoria]
+
+    registros = gastos_df.sort_values("fecha", ascending=False).to_dict("records")
+    
+    return render_template(
+        "gastos.html",
+        gastos=registros,
+        fecha_inicio=fecha_inicio,
+        fecha_fin=fecha_fin,
+        categoria=categoria
+    )

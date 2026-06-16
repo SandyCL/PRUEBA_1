@@ -1,6 +1,9 @@
 from pathlib import Path
 from uuid import uuid4
 
+##dates
+from datetime import datetime 
+
 import matplotlib
 
 matplotlib.use("Agg")
@@ -34,10 +37,13 @@ def cargar_gastos():
 
 def agregar_gasto(fecha, categoria, descripcion, monto):
     gastos = cargar_gastos()
+
+    nuevo_id = len(gastos) +1
+
     nuevo = pd.DataFrame(
         [
             {
-                "id": str(uuid4()),
+                "id": nuevo_id, ### agarrar ultimo indice 
                 "fecha": fecha,
                 "categoria": categoria.strip().title(),
                 "descripcion": descripcion.strip(),
@@ -93,4 +99,72 @@ def crear_grafico_categorias(gastos):
 
     return "img/gastos_por_categoria.png"
 
-##Logica Pandas, CSV, calculos, graficos, etc
+
+############################################Jeremi
+def eliminar_gasto(id):
+    gastos = cargar_gastos()
+    gastos = gastos[gastos["id"] != id]
+    gastos.to_csv(DATA_FILE, index=False)
+
+
+def actualizar_gasto(id, fecha, categoria, descripcion, monto):
+    gastos = cargar_gastos()
+
+    gastos.loc[gastos["id"] == id, "fecha"] = fecha
+    gastos.loc[gastos["id"] == id, "categoria"] = categoria.strip().title()
+    gastos.loc[gastos["id"] == id, "descripcion"] = descripcion.strip()
+    gastos.loc[gastos["id"] == id, "monto"] = float(monto)
+
+    gastos.to_csv(DATA_FILE, index=False)
+
+
+def filtrar_gastos(gastos, fecha_inicio=None, fecha_fin=None, categoria=None):
+
+    if fecha_inicio:
+        gastos = gastos[gastos["fecha"] >= fecha_inicio]
+
+    if fecha_fin:
+        gastos = gastos[gastos["fecha"] <= fecha_fin]
+
+    if categoria:
+        gastos = gastos[gastos["categoria"] == categoria]
+
+    return gastos
+##################################################################
+
+
+# def validar_campos(fecha, categoria, descripcion, monto):   
+#     errores = []
+
+#     if fecha.strip() == "" or fecha == False:
+#         errores.append("Fecha no se puede dejar vacío")
+    
+#     else: ##if the format is incorrect
+#         print ("Favor escribirlo como ")
+    
+#     categorias = categoria 
+#     if categoria.strip() == "":
+        
+
+
+#     return errores
+# errores = validar_campos
+# print(f"{errores}")
+
+
+# def mayor_gasto(gastos):
+    
+#     df = pd.read_csv(DATA_FILE)
+    
+   
+# mayor_gasto()
+
+# #     return categoria
+
+def promedio_mensual(gastos):
+    
+    df = pd.read_csv(DATA_FILE)
+
+    promedio = df
+
+    return promedio
