@@ -164,12 +164,12 @@ def calcular_promedio_mensual(gastos):
 
     p_mensual = []
 
-    guide = str("MES: CANTIDAD")
+    guide = str("MES >>> CANTIDAD")
     p_mensual.append(guide)
      
     
     for mes, value in promedio.items(): 
-        result = f"{mes.month}: ₵{value:.2f}"
+        result = f"{mes.month} >>> ₵{value:.2f}"
         p_mensual.append(result)
     
 
@@ -177,8 +177,25 @@ def calcular_promedio_mensual(gastos):
 
 
 def comparar_gastos_por_mes(gastos):
-    # Espacio reservado para comparar gastos por mes.
-    pass
+    
+    if gastos.empty: 
+        return None
+
+    lista = []
+
+    gastos['fecha']  = pd.to_datetime(gastos['fecha']) 
+    gastos['mes'] = gastos['fecha'].dt.to_period('M') 
+
+    gastoXmes = gastos.groupby('mes')['monto'].sum().sort_values(ascending=False) ##sum of all month expenses
+
+    title = str('MES >>> CANTIDAD')
+    lista.append(title)
+
+    for mes, monto in gastoXmes.items():
+        result= f"{mes.month} >>> ₵{monto:.2f}"
+        lista.append(result)
+    
+    return lista
 
 ########################################### AARON
 def establecer_presupuesto():
