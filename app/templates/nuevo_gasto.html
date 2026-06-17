@@ -8,7 +8,7 @@
     <p>Agrega un nuevo movimiento a tu control personal.</p>
 </section>
 
-<form class="form-card" method="post">
+<form class="form-card" action="{{ url_for('main.nuevo_gasto') }}" method="post">
     <label for="fecha">Fecha</label>
     <input id="fecha" name="fecha" type="date" value="{{ datos.fecha if datos is defined else '' }}" required>
 
@@ -54,13 +54,4 @@
 </section>
 {% endif %}
 
-<section class="panel message-panel">
-    <div class="panel-header">
-        <h2>Mensajes</h2>
-    </div>
-    <div class="action-grid">
-        <button class="button button-secondary" type="button">Mostrar error</button>
-        <button class="button button-secondary" type="button">Mostrar confirmacion</button>
-    </div>
-</section>
 {% endblock %}

@@ -4,15 +4,15 @@ from app.services import (
     agregar_gasto,
     calcular_promedio_mensual,
     cargar_gastos,
+    comparar_gastos_por_mes,
     crear_grafico_categorias,
     obtener_resumen,
     obtener_mayor_categoria,
     eliminar_gasto,
     actualizar_gasto,
     obtener_presupuesto,
-    guardar_presupuesto
-    actualizar_gasto,
-    validar_campos,
+    guardar_presupuesto,
+    validar_campos
     
 )
 
@@ -109,6 +109,23 @@ def promedio_mensual():
         categorias=categorias,
         grafico=grafico,
         promedio_mensual=promedio_mensual_data,
+    )
+
+
+@main.route("/resumen/comparar-meses")
+def comparar_meses():
+    gastos = cargar_gastos()
+    resumen_data = obtener_resumen(gastos)
+    grafico = crear_grafico_categorias(gastos)
+    categorias = resumen_data["por_categoria"].to_dict("records")
+    comparacion_meses_data = comparar_gastos_por_mes(gastos)
+
+    return render_template(
+        "resumen.html",
+        resumen=resumen_data,
+        categorias=categorias,
+        grafico=grafico,
+        comparacion_meses=comparacion_meses_data,
     )
 
 #######################################JEREMI
