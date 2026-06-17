@@ -10,48 +10,30 @@
 
 <form class="form-card" action="{{ url_for('main.nuevo_gasto') }}" method="post">
     <label for="fecha">Fecha</label>
-    <input id="fecha" name="fecha" type="date" value="{{ datos.fecha if datos is defined else '' }}" required>
+    <input id="fecha" name="fecha" type="date" required>
 
     <label for="categoria">Categoria</label>
     <select id="categoria" name="categoria" required>
         <option value="">Selecciona una categoria</option>
-        <option value="Alimentacion" {% if datos is defined and datos.categoria == "Alimentacion" %}selected{% endif %}>Alimentacion</option>
-        <option value="Transporte" {% if datos is defined and datos.categoria == "Transporte" %}selected{% endif %}>Transporte</option>
-        <option value="Servicios" {% if datos is defined and datos.categoria == "Servicios" %}selected{% endif %}>Servicios</option>
-        <option value="Salud" {% if datos is defined and datos.categoria == "Salud" %}selected{% endif %}>Salud</option>
-        <option value="Educacion" {% if datos is defined and datos.categoria == "Educacion" %}selected{% endif %}>Educacion</option>
-        <option value="Entretenimiento" {% if datos is defined and datos.categoria == "Entretenimiento" %}selected{% endif %}>Entretenimiento</option>
-        <option value="Otros" {% if datos is defined and datos.categoria == "Otros" %}selected{% endif %}>Otros</option>
+        <option value="Alimentacion">Alimentacion</option>
+        <option value="Transporte">Transporte</option>
+        <option value="Servicios">Servicios</option>
+        <option value="Salud">Salud</option>
+        <option value="Educacion">Educacion</option>
+        <option value="Entretenimiento">Entretenimiento</option>
+        <option value="Otros">Otros</option>
     </select>
 
     <label for="descripcion">Descripcion</label>
-    <input id="descripcion" name="descripcion" type="text" maxlength="120" value="{{ datos.descripcion if datos is defined else '' }}" required>
+    <input id="descripcion" name="descripcion" type="text" maxlength="120" required>
 
     <label for="monto">Monto</label>
-    <input id="monto" name="monto" type="number" min="0" step="0.01" value="{{ datos.monto if datos is defined else '' }}" required>
+    <input id="monto" name="monto" type="number" min="0" step="0.01" required>
 
     <div class="form-actions">
-        <button class="button button-secondary" type="submit" formaction="{{ url_for('main.validar_campos_route') }}">Validar campos</button>
         <button class="button button-secondary" type="button">Revisar monto negativo</button>
         <button class="button" type="submit">Guardar gasto</button>
     </div>
 </form>
-
-{% if errores is defined %}
-<section class="panel message-panel">
-    <div class="panel-header">
-        <h2>Validacion</h2>
-    </div>
-    {% if errores %}
-        <ul>
-            {% for error in errores %}
-                <li>{{ error }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>Funcion de validacion pendiente de implementar.</p>
-    {% endif %}
-</section>
-{% endif %}
 
 {% endblock %}

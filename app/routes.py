@@ -11,8 +11,7 @@ from app.services import (
     eliminar_gasto,
     actualizar_gasto,
     obtener_presupuesto,
-    guardar_presupuesto,
-    validar_campos
+    guardar_presupuesto
     
 )
 
@@ -47,21 +46,6 @@ def nuevo_gasto():
         return redirect(url_for("main.gastos"))
 
     return render_template("nuevo_gasto.html")
-
-
-@main.route("/gastos/validar", methods=["POST"])
-def validar_campos_route():
-    errores = validar_campos(
-        fecha=request.form["fecha"],
-        categoria=request.form["categoria"],
-        descripcion=request.form["descripcion"],
-        monto=request.form["monto"],
-    )
-    return render_template(
-        "nuevo_gasto.html",
-        errores=errores,
-        datos=request.form,
-    )
 
 
 @main.route("/resumen")

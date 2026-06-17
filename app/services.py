@@ -180,7 +180,7 @@ def comparar_gastos_por_mes(gastos):
     # Espacio reservado para comparar gastos por mes.
     pass
 
-########################################### Aaron abajo
+########################################### AARON
 def establecer_presupuesto():
     while True:
         try:
@@ -216,7 +216,7 @@ def obtener_presupuesto():
         establecer_presupuesto()
         return obtener_presupuesto()
 
-########################################### Aaron arriba
+########################################### AARON
     
 def guardar_presupuesto(valor):
     with open(PRESUPUESTO_FILE, "w") as archivo:
