@@ -9,6 +9,9 @@ from app.services import (
     obtener_mayor_categoria,
     eliminar_gasto,
     actualizar_gasto,
+    obtener_presupuesto,
+    guardar_presupuesto
+    actualizar_gasto,
     validar_campos,
     
 )
@@ -163,3 +166,20 @@ def filtrar_gastos_route():
         fecha_fin=fecha_fin,
         categoria=categoria
     )
+
+
+#################################################### Aaron abajo
+@main.route("/presupuesto")
+def presupuesto_mensual():
+    presupuesto_mes = obtener_presupuesto()
+    return render_template("presupuesto.html", pm=presupuesto_mes)
+
+@main.route("/actualizar_presupuesto", methods=["POST"])
+def actualizar_presupuesto():
+
+    nuevo_presupuesto = request.form["presupuesto"]
+
+    guardar_presupuesto(nuevo_presupuesto)
+
+    return "OK"
+#################################################### Aaron arriba

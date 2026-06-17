@@ -282,7 +282,21 @@ select:focus {
     border: 1px solid var(--line);
     border-radius: 6px;
 }
-
+.edit-link:hover {
+    color: #666;
+}
+.edit-link {
+    font-size: 0.6em;
+    color: #999;
+    text-decoration: underline;
+    font-weight: normal;
+    margin-left: 10px;
+}
+.title-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+}
 @media (max-width: 760px) {
     .nav,
     .row-title,

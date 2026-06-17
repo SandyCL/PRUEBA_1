@@ -11,11 +11,12 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-
+import os
 
 BASE_DIR = Path(__file__).resolve().parent
 DATA_FILE = BASE_DIR / "data" / "gastos.csv"
 CHART_FILE = BASE_DIR / "static" / "img" / "gastos_por_categoria.png"
+PRESUPUESTO_FILE = BASE_DIR / "data" / "presupuesto.txt"
 
 COLUMNAS = ["id", "fecha", "categoria", "descripcion", "monto"]
 
@@ -130,83 +131,84 @@ def filtrar_gastos(gastos, fecha_inicio=None, fecha_fin=None, categoria=None):
         gastos = gastos[gastos["categoria"] == categoria]
 
     return gastos
-################################################################## SANDY
-
-def validar_campos(fecha, categoria, descripcion, monto):
-    errores = []
-
-    try:
-        datetime.strptime(fecha, '%y-%m-%d')
-    except (ValueError, TypeError):
-        errores.append("Introducir la fecha en formato AAAA-MM-DD.")
-    
-    if categoria.strip() == "":
-        errores.append("Favor especificar la categoría.")
-    
-    if descripcion.strip() == "":
-        errores.append("Debe de añadir una descripción.")
-    
-    try: 
-        monto = float(monto)
-        if monto <= 0:
-            errores.append("Monto inválido, debe ser mayor a 0.")
-    
-    except (ValueError, TypeError):
-        errores.append("El monto debe ser en números válidos.")
-    
-    return errores
+##################################################################
 
 
-def obtener_mayor_categoria(gastos):
-    if gastos.empty: 
-        return None
-    
-    resultado = []
-    
-    by_categoria = gastos.groupby('categoria')['monto'].sum()
-    top3 = by_categoria.nlargest(3)
-    
-    print("TOP 3 CATEGORÍAS DE GASTOS")
+# def validar_campos(fecha, categoria, descripcion, monto):   
+#     errores = []
 
-    for categoria, monto in top3.items():
-        resultado.append(f"{categoria}: ₵{monto:.2f}")
-
+#     if fecha.strip() == "" or fecha == False:
+#         errores.append("Fecha no se puede dejar vacío")
     
-    return resultado
-
+#     else: ##if the format is incorrect
+#         print ("Favor escribirlo como ")
     
-def calcular_promedio_mensual(gastos):
+#     categorias = categoria 
+#     if categoria.strip() == "":
+        
+
+
+#     return errores
+# errores = validar_campos
+# print(f"{errores}")
+
+
+# def mayor_gasto(gastos):
+    
+#     df = pd.read_csv(DATA_FILE)
+    
+   
+# mayor_gasto()
+
+# #     return categoria
+
+
+def promedio_mensual(gastos):
+    
+    df = pd.read_csv(DATA_FILE)
+
+    promedio = df
+
+    return promedio
+
+########################################### Aaron abajo
+def establecer_presupuesto():
+    while True:
+        try:
+            nuevo_presupuesto = float(input("Digite su nuevo presupuesto: "))
+            break
+        except: 
+            print("Presupuesto invalido, por favor intentelo de nuevo\n")
+    with open (PRESUPUESTO_FILE, 'w') as presupuesto:
+        presupuesto.write(str(nuevo_presupuesto))
+
+
+def obtener_presupuesto():
     gastos = cargar_gastos()
-
-    if gastos.empty: 
-        return None
-
-    gastos  = gastos.groupby['fecha']('%m').mean()
-    
-    return gastos 
-    
-##def cargar_gastos():
+    total = float(gastos["monto"].sum()) if not gastos.empty else 0
     if not DATA_FILE.exists():
         DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
         pd.DataFrame(columns=COLUMNAS).to_csv(DATA_FILE, index=False)
+    if PRESUPUESTO_FILE.exists() and PRESUPUESTO_FILE.stat().st_size > 0:
+        with open (PRESUPUESTO_FILE, 'r') as archivo:
+            presupuesto = archivo.read()
+        presupuesto_num = float(presupuesto)
+        porcentaje_gastado = (total / presupuesto_num) * 100
+        if total > presupuesto_num:
+            numeros_rojos = True
+        else:
+            numeros_rojos = False
+        return {
+        "total": total,
+        "presupuesto": presupuesto_num,
+        "porcentaje": porcentaje_gastado,
+        "rojo": numeros_rojos} 
+    else:
+        establecer_presupuesto()
+        return obtener_presupuesto()
 
-    gastos = pd.read_csv(DATA_FILE)
-
-    if gastos.empty:
-        return pd.DataFrame(columns=COLUMNAS)
-
-    gastos["fecha"] = pd.to_datetime(gastos["fecha"]).dt.date
-    gastos["monto"] = pd.to_numeric(gastos["monto"], errors="coerce").fillna(0)
-    return gastos
-
-
-# def calcular_promedio_mensual(gastos):
-#     if gastos.empty:
-#         return None
-
-#     gastos["fecha"] = pd.to_datetime(gastos["fecha"])
-#     gastos["mes"] = gastos["fecha"].dt.to_period("M")
-
-#     promedio_por_mes = gastos.groupby("mes", as_index=False)["monto"].mean()
-
-#     return promedio_por_mes.to_dict("records")
+########################################### Aaron arriba
+    
+def guardar_presupuesto(valor):
+    with open(PRESUPUESTO_FILE, "w") as archivo:
+        archivo.write(str(valor))
