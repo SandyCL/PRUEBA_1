@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Editar gasto | Control de gastos{% endblock %}
+
+{% block content %}
+<section class="page-title">
+    <h1>Editar gasto</h1>
+    <p>Actualiza los datos del movimiento seleccionado.</p>
+</section>
+
+<form class="form-card" method="post">
+    <label for="fecha">Fecha</label>
+    <input id="fecha" name="fecha" type="date" value="{{ gasto.fecha }}" required>
+
+    <label for="categoria">Categoria</label>
+    <select id="categoria" name="categoria" required>
+        <option value="">Selecciona una categoria</option>
+        <option value="Alimentacion" {% if gasto.categoria == "Alimentacion" %}selected{% endif %}>Alimentacion</option>
+        <option value="Transporte" {% if gasto.categoria == "Transporte" %}selected{% endif %}>Transporte</option>
+        <option value="Servicios" {% if gasto.categoria == "Servicios" %}selected{% endif %}>Servicios</option>
+        <option value="Salud" {% if gasto.categoria == "Salud" %}selected{% endif %}>Salud</option>
+        <option value="Educacion" {% if gasto.categoria == "Educacion" %}selected{% endif %}>Educacion</option>
+        <option value="Entretenimiento" {% if gasto.categoria == "Entretenimiento" %}selected{% endif %}>Entretenimiento</option>
+        <option value="Otros" {% if gasto.categoria == "Otros" %}selected{% endif %}>Otros</option>
+    </select>
+
+    <label for="descripcion">Descripcion</label>
+    <input id="descripcion" name="descripcion" type="text" maxlength="120" value="{{ gasto.descripcion }}" required>
+
+    <label for="monto">Monto</label>
+    <input id="monto" name="monto" type="number" min="0" step="0.01" value="{{ gasto.monto }}" required>
+
+    <div class="form-actions">
+        <a class="button button-muted" href="{{ url_for('main.gastos') }}">Cancelar</a>
+        <button class="button" type="submit">Guardar cambios</button>
+    </div>
+</form>
+{% endblock %}

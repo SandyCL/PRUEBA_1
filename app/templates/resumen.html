@@ -32,10 +32,34 @@
         <button class="button button-secondary" type="button">Agregar presupuesto mensual</button>
         <button class="button button-secondary" type="button">Crear mas graficos</button>
         <button class="button button-secondary" type="button">Comparar gastos por mes</button>
-        <button class="button button-secondary" type="button">Mostrar mayor categoria</button>
-        <button class="button button-secondary" type="button">Calcular promedio mensual</button>
+        <a class="button button-secondary" href="{{ url_for('main.mayor_categoria') }}">Mostrar mayor categoria</a>
+        <a class="button button-secondary" href="{{ url_for('main.promedio_mensual') }}">Calcular promedio mensual</a>
     </div>
 </section>
+
+{% if mayor_categoria is defined or promedio_mensual is defined %}
+<section class="panel">
+    <div class="panel-header">
+        <h2>Resultado</h2>
+    </div>
+
+    {% if mayor_categoria is defined %}
+        {% if mayor_categoria %}
+            <p>{{ mayor_categoria }}</p>
+        {% else %}
+            <p>Funcion de mayor categoria pendiente de implementar.</p>
+        {% endif %}
+    {% endif %}
+
+    {% if promedio_mensual is defined %}
+        {% if promedio_mensual %}
+            <p>{{ promedio_mensual }}</p>
+        {% else %}
+            <p>Funcion de promedio mensual pendiente de implementar.</p>
+        {% endif %}
+    {% endif %}
+</section>
+{% endif %}
 
 <section class="summary-layout">
     <article class="panel">

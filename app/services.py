@@ -1,7 +1,7 @@
 from pathlib import Path
 from uuid import uuid4
 
-##dates
+######PARA FECHAS
 from datetime import datetime 
 
 import matplotlib
@@ -130,41 +130,83 @@ def filtrar_gastos(gastos, fecha_inicio=None, fecha_fin=None, categoria=None):
         gastos = gastos[gastos["categoria"] == categoria]
 
     return gastos
-##################################################################
+################################################################## SANDY
 
+def validar_campos(fecha, categoria, descripcion, monto):
+    errores = []
 
-# def validar_campos(fecha, categoria, descripcion, monto):   
-#     errores = []
-
-#     if fecha.strip() == "" or fecha == False:
-#         errores.append("Fecha no se puede dejar vacío")
+    try:
+        datetime.strptime(fecha, '%y-%m-%d')
+    except (ValueError, TypeError):
+        errores.append("Introducir la fecha en formato AAAA-MM-DD.")
     
-#     else: ##if the format is incorrect
-#         print ("Favor escribirlo como ")
+    if categoria.strip() == "":
+        errores.append("Favor especificar la categoría.")
     
-#     categorias = categoria 
-#     if categoria.strip() == "":
-        
-
-
-#     return errores
-# errores = validar_campos
-# print(f"{errores}")
-
-
-# def mayor_gasto(gastos):
+    if descripcion.strip() == "":
+        errores.append("Debe de añadir una descripción.")
     
-#     df = pd.read_csv(DATA_FILE)
+    try: 
+        monto = float(monto)
+        if monto <= 0:
+            errores.append("Monto inválido, debe ser mayor a 0.")
     
-   
-# mayor_gasto()
-
-# #     return categoria
-
-def promedio_mensual(gastos):
+    except (ValueError, TypeError):
+        errores.append("El monto debe ser en números válidos.")
     
-    df = pd.read_csv(DATA_FILE)
+    return errores
 
-    promedio = df
 
-    return promedio
+def obtener_mayor_categoria(gastos):
+    if gastos.empty: 
+        return None
+    
+    resultado = []
+    
+    by_categoria = gastos.groupby('categoria')['monto'].sum()
+    top3 = by_categoria.nlargest(3)
+    
+    print("TOP 3 CATEGORÍAS DE GASTOS")
+
+    for categoria, monto in top3.items():
+        resultado.append(f"{categoria}: ₵{monto:.2f}")
+
+    
+    return resultado
+
+    
+def calcular_promedio_mensual(gastos):
+    gastos = cargar_gastos()
+
+    if gastos.empty: 
+        return None
+
+    gastos  = gastos.groupby['fecha']('%m').mean()
+    
+    return gastos 
+    
+##def cargar_gastos():
+    if not DATA_FILE.exists():
+        DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
+        pd.DataFrame(columns=COLUMNAS).to_csv(DATA_FILE, index=False)
+
+    gastos = pd.read_csv(DATA_FILE)
+
+    if gastos.empty:
+        return pd.DataFrame(columns=COLUMNAS)
+
+    gastos["fecha"] = pd.to_datetime(gastos["fecha"]).dt.date
+    gastos["monto"] = pd.to_numeric(gastos["monto"], errors="coerce").fillna(0)
+    return gastos
+
+
+# def calcular_promedio_mensual(gastos):
+#     if gastos.empty:
+#         return None
+
+#     gastos["fecha"] = pd.to_datetime(gastos["fecha"])
+#     gastos["mes"] = gastos["fecha"].dt.to_period("M")
+
+#     promedio_por_mes = gastos.groupby("mes", as_index=False)["monto"].mean()
+
+#     return promedio_por_mes.to_dict("records")

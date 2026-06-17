@@ -2,11 +2,14 @@ from flask import Blueprint, redirect, render_template, request, url_for
 
 from app.services import (
     agregar_gasto,
+    calcular_promedio_mensual,
     cargar_gastos,
     crear_grafico_categorias,
     obtener_resumen,
+    obtener_mayor_categoria,
     eliminar_gasto,
-    actualizar_gasto
+    actualizar_gasto,
+    validar_campos,
     
 )
 
@@ -43,6 +46,21 @@ def nuevo_gasto():
     return render_template("nuevo_gasto.html")
 
 
+@main.route("/gastos/validar", methods=["POST"])
+def validar_campos_route():
+    errores = validar_campos(
+        fecha=request.form["fecha"],
+        categoria=request.form["categoria"],
+        descripcion=request.form["descripcion"],
+        monto=request.form["monto"],
+    )
+    return render_template(
+        "nuevo_gasto.html",
+        errores=errores,
+        datos=request.form,
+    )
+
+
 @main.route("/resumen")
 def resumen():
     gastos = cargar_gastos()
@@ -54,6 +72,40 @@ def resumen():
         resumen=resumen_data,
         categorias=categorias,
         grafico=grafico,
+    )
+
+
+@main.route("/resumen/mayor-categoria")
+def mayor_categoria():
+    gastos = cargar_gastos()
+    resumen_data = obtener_resumen(gastos)
+    grafico = crear_grafico_categorias(gastos)
+    categorias = resumen_data["por_categoria"].to_dict("records")
+    mayor_categoria_data = obtener_mayor_categoria(gastos)
+
+    return render_template(
+        "resumen.html",
+        resumen=resumen_data,
+        categorias=categorias,
+        grafico=grafico,
+        mayor_categoria=mayor_categoria_data,
+    )
+
+
+@main.route("/resumen/promedio-mensual")
+def promedio_mensual():
+    gastos = cargar_gastos()
+    resumen_data = obtener_resumen(gastos)
+    grafico = crear_grafico_categorias(gastos)
+    categorias = resumen_data["por_categoria"].to_dict("records")
+    promedio_mensual_data = calcular_promedio_mensual(gastos)
+
+    return render_template(
+        "resumen.html",
+        resumen=resumen_data,
+        categorias=categorias,
+        grafico=grafico,
+        promedio_mensual=promedio_mensual_data,
     )
 
 #######################################JEREMI
