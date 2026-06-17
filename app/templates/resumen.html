@@ -61,9 +61,17 @@
 
     {% if comparacion_meses is defined %}
         {% if comparacion_meses %}
-            <p>{{ comparacion_meses }}</p>
+            {% for item in comparacion_meses %}
+                <p>{{ item }}</p>
+            {% endfor %}
         {% else %}
             <p>Funcion de comparar gastos por mes pendiente de implementar.</p>
+        {% endif %}
+
+        {% if grafico_comparacion_meses %}
+            <img class="chart" src="{{ url_for('static', filename=grafico_comparacion_meses) }}" alt="Grafico de comparacion de gastos por mes">
+        {% else %}
+            <p>Grafico de comparacion de gastos por mes pendiente de implementar.</p>
         {% endif %}
     {% endif %}
 </section>

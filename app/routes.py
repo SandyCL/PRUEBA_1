@@ -6,6 +6,7 @@ from app.services import (
     cargar_gastos,
     comparar_gastos_por_mes,
     crear_grafico_categorias,
+    crear_grafico_comparacion_meses,
     obtener_resumen,
     obtener_mayor_categoria,
     eliminar_gasto,
@@ -103,6 +104,7 @@ def comparar_meses():
     grafico = crear_grafico_categorias(gastos)
     categorias = resumen_data["por_categoria"].to_dict("records")
     comparacion_meses_data = comparar_gastos_por_mes(gastos)
+    grafico_comparacion_meses = crear_grafico_comparacion_meses(gastos)
 
     return render_template(
         "resumen.html",
@@ -110,6 +112,7 @@ def comparar_meses():
         categorias=categorias,
         grafico=grafico,
         comparacion_meses=comparacion_meses_data,
+        grafico_comparacion_meses=grafico_comparacion_meses,
     )
 
 #######################################JEREMI

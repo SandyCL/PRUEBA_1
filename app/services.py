@@ -16,6 +16,7 @@ import os
 BASE_DIR = Path(__file__).resolve().parent
 DATA_FILE = BASE_DIR / "data" / "gastos.csv"
 CHART_FILE = BASE_DIR / "static" / "img" / "gastos_por_categoria.png"
+MONTHLY_COMPARISON_CHART_FILE = BASE_DIR / "static" / "img" / "comparacion_gastos_mes.png"
 PRESUPUESTO_FILE = BASE_DIR / "data" / "presupuesto.txt"
 
 COLUMNAS = ["id", "fecha", "categoria", "descripcion", "monto"]
@@ -196,6 +197,13 @@ def comparar_gastos_por_mes(gastos):
         lista.append(result)
     
     return lista
+
+
+def crear_grafico_comparacion_meses(gastos):
+    # Espacio reservado para crear el grafico de comparacion de gastos por mes.
+    # Cuando implementes la logica con Matplotlib, guarda la imagen en
+    # MONTHLY_COMPARISON_CHART_FILE y retorna "img/comparacion_gastos_mes.png".
+    pass
 
 ########################################### AARON
 def establecer_presupuesto():
