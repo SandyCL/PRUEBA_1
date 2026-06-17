@@ -11,11 +11,12 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-
+import os
 
 BASE_DIR = Path(__file__).resolve().parent
 DATA_FILE = BASE_DIR / "data" / "gastos.csv"
 CHART_FILE = BASE_DIR / "static" / "img" / "gastos_por_categoria.png"
+PRESUPUESTO_FILE = BASE_DIR / "data" / "presupuesto.txt"
 
 COLUMNAS = ["id", "fecha", "categoria", "descripcion", "monto"]
 
@@ -161,6 +162,7 @@ def filtrar_gastos(gastos, fecha_inicio=None, fecha_fin=None, categoria=None):
 
 # #     return categoria
 
+
 def promedio_mensual(gastos):
     
     df = pd.read_csv(DATA_FILE)
@@ -168,3 +170,45 @@ def promedio_mensual(gastos):
     promedio = df
 
     return promedio
+
+########################################### Aaron abajo
+def establecer_presupuesto():
+    while True:
+        try:
+            nuevo_presupuesto = float(input("Digite su nuevo presupuesto: "))
+            break
+        except: 
+            print("Presupuesto invalido, por favor intentelo de nuevo\n")
+    with open (PRESUPUESTO_FILE, 'w') as presupuesto:
+        presupuesto.write(str(nuevo_presupuesto))
+
+
+def obtener_presupuesto():
+    gastos = cargar_gastos()
+    total = float(gastos["monto"].sum()) if not gastos.empty else 0
+    if not DATA_FILE.exists():
+        DATA_FILE.parent.mkdir(parents=True, exist_ok=True)
+        pd.DataFrame(columns=COLUMNAS).to_csv(DATA_FILE, index=False)
+    if PRESUPUESTO_FILE.exists() and PRESUPUESTO_FILE.stat().st_size > 0:
+        with open (PRESUPUESTO_FILE, 'r') as archivo:
+            presupuesto = archivo.read()
+        presupuesto_num = float(presupuesto)
+        porcentaje_gastado = (total / presupuesto_num) * 100
+        if total > presupuesto_num:
+            numeros_rojos = True
+        else:
+            numeros_rojos = False
+        return {
+        "total": total,
+        "presupuesto": presupuesto_num,
+        "porcentaje": porcentaje_gastado,
+        "rojo": numeros_rojos} 
+    else:
+        establecer_presupuesto()
+        return obtener_presupuesto()
+
+########################################### Aaron arriba
+    
+def guardar_presupuesto(valor):
+    with open(PRESUPUESTO_FILE, "w") as archivo:
+        archivo.write(str(valor))
