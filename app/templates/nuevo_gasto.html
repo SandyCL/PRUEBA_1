@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Nuevo gasto | Control de gastos{% endblock %}
+
+{% block content %}
+<section class="page-title">
+    <h1>Registrar gasto</h1>
+    <p>Agrega un nuevo movimiento a tu control personal.</p>
+</section>
+
+<form class="form-card" method="post">
+    <label for="fecha">Fecha</label>
+    <input id="fecha" name="fecha" type="date" required oninvalid="this.setCustomValidity('Debe llenar todos los espacios.')" oninput="this.setCustomValidity('')">
+
+    <label for="categoria">Categoria</label>
+    <select id="categoria" name="categoria" required oninvalid="this.setCustomValidity('Debe llenar todos los espacios.')" oninput="this.setCustomValidity('')">
+        <option value="">Selecciona una categoria</option>
+        <option value="Alimentacion">Alimentacion</option>
+        <option value="Transporte">Transporte</option>
+        <option value="Servicios">Servicios</option>
+        <option value="Salud">Salud</option>
+        <option value="Educacion">Educacion</option>
+        <option value="Entretenimiento">Entretenimiento</option>
+        <option value="Otros">Otros</option>
+    </select>
+
+    <label for="descripcion">Descripcion</label>
+    <input id="descripcion" name="descripcion" type="text" maxlength="120" required oninvalid="this.setCustomValidity('Debe llenar todos los espacios.')" oninput="this.setCustomValidity('')">
+
+    <label for="monto">Monto</label>
+    <input id="monto" name="monto" type="number" min="0.01" step="0.01" required oninvalid="this.setCustomValidity('Debe ingresar un monto positivo.')" oninput="this.setCustomValidity('')">
+
+    <div class="form-actions">
+        <button class="button" type="submit">Guardar gasto</button>
+    </div>
+</form>
+
+{% endblock %}

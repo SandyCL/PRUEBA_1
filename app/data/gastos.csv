@@ -1,0 +1,8 @@
+id,fecha,categoria,descripcion,monto
+1,2026-06-01,Alimentacion,Compra supermercado,48500.0
+2,2026-06-03,Transporte,Gasolina,30000.0
+3,2026-06-05,Servicios,Internet,28000.0
+4,2026-06-07,Entretenimiento,Cine,12000.0
+5,2026-06-10,Salud,Farmacia,9500.0
+6,2026-06-26,Servicios,frijoles,1500.0
+7,2026-06-13,Transporte,hola,90000.0

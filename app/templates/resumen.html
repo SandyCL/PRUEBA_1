@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Resumen | Control de gastos{% endblock %}
+
+{% block content %}
+<section class="page-title">
+    <h1>Resumen financiero</h1>
+    <p>Analisis de gastos agrupados por categoria.</p>
+</section>
+
+<section class="stats-grid">
+    <article class="stat-card">
+        <span>Total</span>
+        <strong>₡{{ "{:,.2f}".format(resumen.total) }}</strong>
+    </article>
+    <article class="stat-card">
+        <span>Promedio</span>
+        <strong>₡{{ "{:,.2f}".format(resumen.promedio) }}</strong>
+    </article>
+    <article class="stat-card">
+        <span>Cantidad</span>
+        <strong>{{ resumen.cantidad }}</strong>
+    </article>
+</section>
+
+<section class="panel">
+    <div class="panel-header">
+        <h2>Reportes pendientes</h2>
+    </div>
+    <div class="action-grid">
+        <button class="button button-secondary" type="button">Mostrar totales por mes</button>
+        <button class="button button-secondary" type="button">Agregar presupuesto mensual</button>
+        <button class="button button-secondary" type="button">Crear mas graficos</button>
+        <button class="button button-secondary" type="button">Comparar gastos por mes</button>
+        <button class="button button-secondary" type="button">Mostrar mayor categoria</button>
+        <button class="button button-secondary" type="button">Calcular promedio mensual</button>
+    </div>
+</section>
+
+<section class="summary-layout">
+    <article class="panel">
+        <h2>Por categoria</h2>
+        {% if categorias %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Categoria</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in categorias %}
+                    <tr>
+                        <td>{{ item.categoria }}</td>
+                        <td>₡{{ "{:,.2f}".format(item.monto) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No hay datos para resumir.</p>
+        {% endif %}
+    </article>
+
+    <article class="panel">
+        <h2>Grafico</h2>
+        {% if grafico %}
+            <img class="chart" src="{{ url_for('static', filename=grafico) }}" alt="Grafico de gastos por categoria">
+        {% else %}
+            <p>Registra gastos para generar el grafico.</p>
+        {% endif %}
+    </article>
+</section>
+{% endblock %}
