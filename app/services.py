@@ -133,31 +133,6 @@ def filtrar_gastos(gastos, fecha_inicio=None, fecha_fin=None, categoria=None):
     return gastos
 ################################################################## SANDY
 
-def validar_campos(fecha, categoria, descripcion, monto):
-    errores = []
-
-    try:
-        datetime.strptime(fecha, '%y-%m-%d')
-    except (ValueError, TypeError):
-        errores.append("Introducir la fecha en formato AAAA-MM-DD.")
-    
-    if categoria.strip() == "":
-        errores.append("Favor especificar la categoría.")
-    
-    if descripcion.strip() == "":
-        errores.append("Debe de añadir una descripción.")
-    
-    try: 
-        monto = float(monto)
-        if monto <= 0:
-            errores.append("Monto inválido, debe ser mayor a 0.")
-    
-    except (ValueError, TypeError):
-        errores.append("El monto debe ser en números válidos.")
-    
-    return errores
-
-
 def obtener_mayor_categoria(gastos):
     if gastos.empty: 
         return None
