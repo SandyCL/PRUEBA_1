@@ -36,6 +36,30 @@ def cargar_gastos():
     gastos["monto"] = pd.to_numeric(gastos["monto"], errors="coerce").fillna(0)
     return gastos
 
+def validar_campos_completos(fecha, categoria, descripcion, monto):
+    if fecha == "" or categoria == "" or descripcion == "" or monto == "":
+        return False
+    return True 
+
+def verificar_monto_positivo(monto):
+    try:
+        if float(monto) < 0:
+            return False 
+        return True 
+    except:
+        return False
+
+def buscar_por_descripcion(texto_buscado):
+    gastos_df = cargar_gastos()
+    lista_gastos = gastos_df.to_dict("records")
+    resultados = []
+    for gasto in lista_gastos:
+        descripcion_gasto = gasto["descripcion"].lower()
+        termino_buscado = texto_buscado.lower()
+        if termino_buscado in descripcion_gasto:
+            resultados.append(gasto)
+    return resultados
+
 
 def agregar_gasto(fecha, categoria, descripcion, monto):
     gastos = cargar_gastos()

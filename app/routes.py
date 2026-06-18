@@ -1,5 +1,5 @@
 from flask import Blueprint, redirect, render_template, request, url_for
-
+from app.services import validar_campos_completos, verificar_monto_positivo, buscar_por_descripcion
 from app.services import (
     agregar_gasto,
     calcular_promedio_mensual,
@@ -28,16 +28,14 @@ def index():
     return render_template("index.html", resumen=resumen, ultimos_gastos=ultimos_gastos)
 
 
-@main.route("/gastos")
-def gastos():
-    gastos_df = cargar_gastos()
-    registros = gastos_df.sort_values("fecha", ascending=False).to_dict("records")
-    return render_template("gastos.html", gastos=registros)
-
-
 @main.route("/gastos/nuevo", methods=["GET", "POST"])
 def nuevo_gasto():
     if request.method == "POST":
+        if not validar_campos_completos(request.form["fecha"], request.form["categoria"], request.form["descripcion"], request.form["monto"]):
+            return render_template("nuevo_gasto.html", error="Por favor llene todos los campos.")
+        if not verificar_monto_positivo(request.form["monto"]):
+            return render_template("nuevo_gasto.html", error="El monto debe ser un número positivo.")
+
         agregar_gasto(
             fecha=request.form["fecha"],
             categoria=request.form["categoria"],
@@ -47,6 +45,22 @@ def nuevo_gasto():
         return redirect(url_for("main.gastos"))
 
     return render_template("nuevo_gasto.html")
+
+
+@main.route("/buscar")
+def buscar():
+    palabra = request.args.get("palabra_clave", "")
+    gastos_encontrados = buscar_por_descripcion(palabra)
+    if not gastos_encontrados:
+        return render_template("gastos.html", gastos=gastos_encontrados, error="No se encontraron gastos con esa descripción.")
+    return render_template("gastos.html", gastos=gastos_encontrados)
+
+@main.route("/gastos")
+def gastos():
+    gastos_df = cargar_gastos()
+    registros = gastos_df.sort_values("fecha", ascending=False).to_dict("records")
+    return render_template("gastos.html", gastos=registros)
+
 
 
 @main.route("/resumen")

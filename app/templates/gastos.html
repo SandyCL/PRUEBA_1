@@ -3,6 +3,15 @@
 {% block title %}Gastos | Control de gastos{% endblock %}
 
 {% block content %}
+{% if error %}
+<div id="popup-overlay">
+    <div>
+        <h3>Error</h3>
+        <p>{{ error }}</p>
+        <button onclick="document.getElementById('popup-overlay').style.display='none'">Aceptar</button>
+    </div>
+</div>
+{% endif %}
 <section class="page-title row-title">
     <div>
         <h1>Gastos registrados</h1>
@@ -15,7 +24,7 @@
     <div class="panel-header">
         <h2>Filtros y busqueda</h2>
     </div>
-    <form class="filter-form" action="{{ url_for('main.filtrar_gastos_route') }}" method="get">
+    <form class="filter-form" action="{{ url_for('main.filtrar_gastos_route') }}" method="get" id="search-filter-form">
         <div>
             <label for="fecha_inicio">Fecha inicio</label>
             <input id="fecha_inicio" name="fecha_inicio" type="date" value="{{ fecha_inicio or '' }}">
@@ -39,11 +48,11 @@
         </div>
         <div>
             <label for="descripcion">Descripcion</label>
-            <input id="descripcion" name="descripcion" type="search" placeholder="Buscar descripcion">
+            <input id="descripcion" name="palabra_clave" type="search" placeholder="Buscar descripcion">
         </div>
         <div class="filter-actions">
             <button class="button" type="submit">Filtrar</button>
-            <button class="button button-secondary" type="button">Buscar</button>
+            <button class="button button-secondary" type="submit" onclick="document.getElementById('search-filter-form').action='/buscar';">Buscar</button>
             <a class="button button-muted" href="{{ url_for('main.gastos') }}">Limpiar</a>
         </div>
     </form>
