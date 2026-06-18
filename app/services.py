@@ -40,7 +40,7 @@ def cargar_gastos():
 def agregar_gasto(fecha, categoria, descripcion, monto):
     gastos = cargar_gastos()
 
-    nuevo_id = len(gastos) +1
+    nuevo_id = int(gastos["id"].max()) + 1 if not gastos.empty else 1
 
     nuevo = pd.DataFrame(
         [
