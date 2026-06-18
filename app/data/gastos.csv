@@ -1,7 +1,7 @@
 id,fecha,categoria,descripcion,monto
-2,2026-06-03,Transporte,Gasolina,30000.0
-3,2026-06-05,Servicios,Internet,28000.0
-4,2026-06-07,Entretenimiento,Cine,12000.0
-7,2026-04-06,Salud,disease,14999.95
-7,2026-06-04,Educacion,hola,9000.0
-6,2026-06-02,Alimentacion,g,9000.0
+1,2026-06-03,Transporte,Gasolina,30000.0
+2,2026-06-05,Servicios,Internet,28000.0
+3,2026-06-07,Entretenimiento,Cine,12000.0
+4,2026-06-26,Servicios,frijoles,1500.0
+5,2026-04-06,Salud,disease,14999.95
+6,2026-04-28,Alimentacion,burger king,4500.0

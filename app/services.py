@@ -64,7 +64,7 @@ def buscar_por_descripcion(texto_buscado):
 def agregar_gasto(fecha, categoria, descripcion, monto):
     gastos = cargar_gastos()
 
-    nuevo_id = len(gastos) +1
+    nuevo_id = int(gastos["id"].max()) + 1 if not gastos.empty else 1
 
     nuevo = pd.DataFrame(
         [
@@ -211,7 +211,7 @@ def comparar_gastos_por_mes(gastos):
     gastos['fecha']  = pd.to_datetime(gastos['fecha']) 
     gastos['mes'] = gastos['fecha'].dt.to_period('M') 
 
-    gastoXmes = gastos.groupby('mes')['monto'].sum().sort_values(ascending=False) ##sum of all month expenses
+    gastoXmes = gastos.groupby('mes')['monto'].sum().sort_values(ascending=False) ##sum of all month  + sortes from small to big
 
     title = str('MES >>> CANTIDAD')
     lista.append(title)
@@ -222,12 +222,37 @@ def comparar_gastos_por_mes(gastos):
     
     return lista
 
+def datos_gastosXmes(gastos):
+    gastos['fecha']  = pd.to_datetime(gastos['fecha']) 
+    gastos['mes'] = gastos['fecha'].dt.to_period('M') 
+
+    gastoXmes = gastos.groupby('mes')['monto'].sum() #
+
+    return gastoXmes
 
 def crear_grafico_comparacion_meses(gastos):
+    gastoXmes = datos_gastosXmes(gastos)
+
+    if gastoXmes is None:
+        return 
+    
+    mes = gastoXmes.index.astype(str)
+    monto = gastoXmes.values
+
+    plt.figure(figsize=(8, 4.5))
+    plt.barh(mes,monto,color=("#004a98", "#1A1919", "#f2e860"))
+    plt.title('COMPARACIÓN DE GASTOS POR MES')
+    plt.xlabel("MONTO")
+    plt.ylabel("MES")
+    plt.tight_layout()
+    plt.savefig(MONTHLY_COMPARISON_CHART_FILE)
+    plt.close()
+
+
     # Espacio reservado para crear el grafico de comparacion de gastos por mes.
     # Cuando implementes la logica con Matplotlib, guarda la imagen en
     # MONTHLY_COMPARISON_CHART_FILE y retorna "img/comparacion_gastos_mes.png".
-    pass
+    return "img/comparacion_gastos_mes.png"
 
 ########################################### AARON
 def establecer_presupuesto():
