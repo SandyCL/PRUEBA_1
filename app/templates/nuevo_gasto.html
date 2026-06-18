@@ -10,25 +10,25 @@
 
 <form class="form-card" action="{{ url_for('main.nuevo_gasto') }}" method="post">
     <label for="fecha">Fecha</label>
-    <input id="fecha" name="fecha" type="date" required>
+    <input id="fecha" name="fecha" type="date" required oninvalid="this.setCustomValidity('Debe llenar todos los espacios.')" oninput="this.setCustomValidity('')">
 
     <label for="categoria">Categoria</label>
-    <select id="categoria" name="categoria" required>
-        <option value="">Selecciona una categoria</option>
-        <option value="Alimentacion">Alimentacion</option>
-        <option value="Transporte">Transporte</option>
-        <option value="Servicios">Servicios</option>
-        <option value="Salud">Salud</option>
-        <option value="Educacion">Educacion</option>
-        <option value="Entretenimiento">Entretenimiento</option>
-        <option value="Otros">Otros</option>
-    </select>
+<select id="categoria" name="categoria" class="form-control" required oninvalid="this.setCustomValidity('Debe llenar todos los espacios.')" oninput="this.setCustomValidity('')">
+    <option value="">Selecciona una categoria</option>
+    <option value="Alimentacion">Alimentacion</option>
+    <option value="Transporte">Transporte</option>
+    <option value="Servicios">Servicios</option>
+    <option value="Salud">Salud</option>
+    <option value="Educacion">Educacion</option>
+    <option value="Entretenimiento">Entretenimiento</option>
+    <option value="Otros">Otros</option>
+</select>
 
     <label for="descripcion">Descripcion</label>
-    <input id="descripcion" name="descripcion" type="text" maxlength="120" required>
+    <input id="descripcion" name="descripcion" type="text" maxlength="120" required oninvalid="this.setCustomValidity('Debe llenar todos los espacios.')" oninput="this.setCustomValidity('')">
 
     <label for="monto">Monto</label>
-    <input id="monto" name="monto" type="number" min="0" step="0.01" required>
+    <input id="monto" name="monto" type="number" min="0.01" step="0.01" required oninvalid="this.setCustomValidity('Debe ingresar un monto positivo.')" oninput="this.setCustomValidity('')">
 
     <div class="form-actions">
         <button class="button button-secondary" type="button">Revisar monto negativo</button>
