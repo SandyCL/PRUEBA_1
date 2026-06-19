@@ -61,7 +61,7 @@ function editarPresupuesto() {
             })
             .then(response => response.text())
             .then(data => {
-                location.reload();
+                window.location.href = "/presupuesto";
             });
 
             break;

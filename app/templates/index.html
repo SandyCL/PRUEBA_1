@@ -22,18 +22,17 @@
         <strong>{{ resumen.cantidad }}</strong>
     </article>
 </section>
-
 <section class="panel">
     <div class="panel-header">
-        <h2>Acciones pendientes</h2>
+        <h2>Solicitudes</h2>
     </div>
     <div class="action-grid">
         <a class="button button-secondary" href="{{ url_for('main.gastos') }}">Filtrar gastos</a>
-        <a class="button button-secondary" href="{{ url_for('main.gastos') }}">Buscar descripcion</a>
-        <a class="button button-secondary" href="{{ url_for('main.resumen') }}">Totales por mes</a>
+        <a class="button button-secondary" href="{{ url_for('main.mayor_categoria') }}">Mayor categoría</a>
+        <a class="button button-secondary" href="{{ url_for('main.comparar_meses') }}">Totales por mes</a>
         <a class="button button-secondary" href="{{ url_for('main.presupuesto_mensual') }}">Presupuesto mensual</a>
-        <a class="button button-secondary" href="{{ url_for('main.resumen') }}">Comparar meses</a>
-        <a class="button button-secondary" href="{{ url_for('main.resumen') }}">Promedio mensual</a>
+        <a class="button button-secondary" href="{{ url_for('main.comparar_meses') }}">Comparar meses</a>
+        <a class="button button-secondary" href="{{ url_for('main.promedio_mensual') }}">Promedio mensual</a>
     </div>
 </section>
 

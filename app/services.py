@@ -36,7 +36,7 @@ def cargar_gastos():
     gastos["fecha"] = pd.to_datetime(gastos["fecha"]).dt.date
     gastos["monto"] = pd.to_numeric(gastos["monto"], errors="coerce").fillna(0)
     return gastos
-
+############################################################## Arleth abajo
 def validar_campos_completos(fecha, categoria, descripcion, monto):
     if fecha == "" or categoria == "" or descripcion == "" or monto == "":
         return False
@@ -61,6 +61,7 @@ def buscar_por_descripcion(texto_buscado):
             resultados.append(gasto)
     return resultados
 
+############################################################## Arleth arriba
 
 def agregar_gasto(fecha, categoria, descripcion, monto):
     gastos = cargar_gastos()
@@ -307,3 +308,4 @@ def obtener_presupuesto():
 def guardar_presupuesto(valor):
     with open(PRESUPUESTO_FILE, "w") as archivo:
         archivo.write(str(valor))
+########################################### AARON

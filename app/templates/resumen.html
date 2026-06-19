@@ -25,15 +25,15 @@
 
 <section class="panel">
     <div class="panel-header">
-        <h2>Reportes pendientes</h2>
+        <h2>Solicitudes</h2>
     </div>
     <div class="action-grid">
-        <button class="button button-secondary" type="button">Mostrar totales por mes</button>
-        <button class="button button-secondary" type="button">Agregar presupuesto mensual</button>
-        <button class="button button-secondary" type="button">Crear mas graficos</button>
-        <a class="button button-secondary" href="{{ url_for('main.comparar_meses') }}">Comparar gastos por mes</a>
-        <a class="button button-secondary" href="{{ url_for('main.mayor_categoria') }}">Mostrar mayor categoria</a>
-        <a class="button button-secondary" href="{{ url_for('main.promedio_mensual') }}">Calcular promedio mensual</a>
+        <a class="button button-secondary" href="{{ url_for('main.gastos') }}">Filtrar gastos</a>
+        <a class="button button-secondary" href="{{ url_for('main.mayor_categoria') }}">Mayor categoría</a>
+        <a class="button button-secondary" href="{{ url_for('main.comparar_meses') }}">Totales por mes</a>
+        <a class="button button-secondary" href="{{ url_for('main.presupuesto_mensual') }}">Presupuesto mensual</a>
+        <a class="button button-secondary" href="{{ url_for('main.comparar_meses') }}">Comparar meses</a>
+        <a class="button button-secondary" href="{{ url_for('main.promedio_mensual') }}">Promedio mensual</a>
     </div>
 </section>
 
@@ -42,36 +42,84 @@
     <div class="panel-header">
         <h2>Resultado</h2>
     </div>
-
-    {% if mayor_categoria is defined %}
+        {% if mayor_categoria is defined %}
         {% if mayor_categoria %}
-            <p>{{ mayor_categoria }}</p>
+            <!-- Extraemos el primer elemento de la lista para mostrar el gasto más alto -->
+            <p style="font-family: sans-serif; font-size: 16px; color: #333333; margin: 15px 0;">
+                La categoría de mayor gasto es: <strong style="color: #2f7d6d; font-size: 18px;">{{ mayor_categoria[0] }}</strong>
+            </p>
         {% else %}
-            <p>Funcion de mayor categoria pendiente de implementar.</p>
+            <p>Aún no se han registrado gastos para determinar la mayor categoría.</p>
         {% endif %}
-    {% endif %}
+        {% endif %}
 
-    {% if promedio_mensual is defined %}
+        {% if promedio_mensual is defined %}
         {% if promedio_mensual %}
-            <p>{{ promedio_mensual }}</p>
+            <div style="max-width: 500px; margin: 20px auto; background: #ffffff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); padding: 15px;">
+                <table style="width: 100%; border-collapse: collapse; font-family: sans-serif; font-size: 15px; text-align: left;">
+                    <thead>
+                        <tr style="background-color: #2f7d6d;">
+                            <th style="padding: 12px 15px; border-top-left-radius: 6px; border-bottom-left-radius: 6px; color: #ffffff;">Mes</th>
+                            <th style="padding: 12px 15px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; text-align: right; color: #ffffff;">Promedio de Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for registro in promedio_mensual %}
+                            {% if 'MES' not in registro %}
+                                {% set partes = registro.split(' >>> ') %}
+                                <tr style="border-bottom: 1px solid #dddddd;">
+                                    <td style="padding: 12px 15px; color: #333333; font-weight: bold;">Mes {{ partes[0] }}</td>
+                                    <td style="padding: 12px 15px; color: #2f7d6d; font-weight: bold; text-align: right;">{{ partes[1] }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         {% else %}
             <p>Funcion de promedio mensual pendiente de implementar.</p>
         {% endif %}
     {% endif %}
 
     {% if comparacion_meses is defined %}
-        {% if comparacion_meses %}
-            {% for item in comparacion_meses %}
-                <p>{{ item }}</p>
-            {% endfor %}
-        {% else %}
-            <p>Funcion de comparar gastos por mes pendiente de implementar.</p>
-        {% endif %}
+    {% if comparacion_meses %}
+        <div style="max-width: 500px; margin: 20px auto; background: #ffffff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); padding: 15px;">
+            <table style="width: 100%; border-collapse: collapse; font-family: sans-serif; font-size: 15px; text-align: left;">
+                <thead>
+                    <!-- Unificado al fondo verde del presupuesto y el gráfico -->
+                    <tr style="background-color: #2f7d6d;">
+                        <!-- Forzado de texto blanco directo en cada th -->
+                        <th style="padding: 12px 15px; border-top-left-radius: 6px; border-bottom-left-radius: 6px; color: #ffffff;">Mes / Período</th>
+                        <th style="padding: 12px 15px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; text-align: right; color: #ffffff;">Total Gastado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in comparacion_meses %}
+                        {% if 'MES' not in item %}
+                            {% set partes = item.split(' >>> ') %}
+                            <!-- Corrección: Se quitó el doble > sobrante al final -->
+                            <tr style="border-bottom: 1px solid #dddddd;">
+                                <td style="padding: 12px 15px; color: #333333; font-weight: bold;">Mes {{ partes[0] }}</td>
+                                <!-- Unificado al color verde de los montos -->
+                                <td style="padding: 12px 15px; color: #2f7d6d; font-weight: bold; text-align: right;">{{ partes[1] }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p>Función de comparar gastos por mes pendiente de implementar.</p>
+    {% endif %}
 
         {% if grafico_comparacion_meses %}
-            <img class="chart" src="{{ url_for('static', filename=grafico_comparacion_meses) }}" alt="Grafico de comparacion de gastos por mes">
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; margin: 30px 0;">
+                <img class="chart" src="{{ url_for('static', filename=grafico_comparacion_meses) }}" 
+                     style="max-width: 700px; width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); display: block;" 
+                     alt="Gráfico de comparación de gastos por mes">
+            </div>
         {% else %}
-            <p>Grafico de comparacion de gastos por mes pendiente de implementar.</p>
+            <p>Gráfico de comparación de gastos por mes pendiente de implementar.</p>
         {% endif %}
     {% endif %}
 </section>
