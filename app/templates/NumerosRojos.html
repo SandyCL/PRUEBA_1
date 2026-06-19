@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio | Control de gastos{% endblock %}
+
+{% block content %}
+<section class="page-title">
+    <h1>Presupuesto mensual</h1>
+    <a href="#" class="edit-link" onclick="confirmarCambio()">
+    editar
+</a>
+    <p>Establezca un presupesto para tener un mejor control de sus finanzas.</p>
+</section>
+
+<section class="stats-grid">
+    <article class="stat-card">
+    <span class="spanred">Total gastado</span>
+        <strong class="strongred">₡{{ "{:,.2f}".format(pm.total) }}</strong>
+    </article>
+    <article class="stat-card">
+        <span>Presupuesto mensual</span>
+        <strong>₡{{ "{:,.2f}".format(pm.presupuesto) }}</strong>
+    </article>
+    <article class="stat-card">
+        <span>Deficit</span>
+        <strong>₡{{ "{:,.2f}".format(pm.deficit) }}</strong>
+    </article>
+</section>
+<h1>Has excedido tu límite presupuestal por lo que no se podran añadir gastos nuevos</h1>
+<script>
+function confirmarCambio() {
+    let respuesta = confirm("¿Desea cambiar su presupuesto?");
+
+    if (respuesta) {
+         editarPresupuesto();
+    } else {
+        alert("Elegió NO");
+    }
+}
+</script>
+<script>
+function editarPresupuesto() {
+
+    while (true) {
+
+        let nuevo = prompt("Digite el nuevo presupuesto:");
+
+        if (nuevo === null) {
+            return;
+        }
+
+        let presupuesto = Number(nuevo);
+
+        if (!isNaN(presupuesto) && presupuesto >= 0) {
+
+            fetch("/actualizar_presupuesto", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: `presupuesto=${presupuesto}`
+            })
+            .then(response => response.text())
+            .then(data => {
+                location.reload();
+            });
+
+            break;
+        }
+
+        alert("Por favor ingrese únicamente números.");
+
+    }
+}
+</script>
+{% endblock %}

@@ -17,6 +17,7 @@ BASE_DIR = Path(__file__).resolve().parent
 DATA_FILE = BASE_DIR / "data" / "gastos.csv"
 CHART_FILE = BASE_DIR / "static" / "img" / "gastos_por_categoria.png"
 MONTHLY_COMPARISON_CHART_FILE = BASE_DIR / "static" / "img" / "comparacion_gastos_mes.png"
+PRESUPUESTO_CHART_FILE = BASE_DIR / "static" / "img" / "Analisis_de_presupuesto.png"
 PRESUPUESTO_FILE = BASE_DIR / "data" / "presupuesto.txt"
 
 COLUMNAS = ["id", "fecha", "categoria", "descripcion", "monto"]
@@ -279,19 +280,30 @@ def obtener_presupuesto():
         porcentaje_gastado = (total / presupuesto_num) * 100
         if total > presupuesto_num:
             numeros_rojos = True
+            restante = 0 
+            Deficit = total - presupuesto_num
         else:
             numeros_rojos = False
+            Deficit = 0
+            restante = presupuesto_num - total
+        datos_numéricos = [total,restante]
+        datos_literales = ["Gastos totales","Presupuesto Restante"]
+        piechart_dictionary = {"Numeros":datos_numéricos,"Títulos":datos_literales}
+        DFdictionary = pd.DataFrame(piechart_dictionary)
+        plt.pie(x = DFdictionary.Numeros, labels=DFdictionary.Títulos, colors = ["#2F7D6D","#E37971"], autopct='%1.1f%%')
+        plt.title('Análisis de presupuesto')
+        plt.savefig(PRESUPUESTO_CHART_FILE, bbox_inches='tight', dpi=100)
+        plt.close()
         return {
         "total": total,
         "presupuesto": presupuesto_num,
         "porcentaje": porcentaje_gastado,
-        "rojo": numeros_rojos} 
+        "rojo": numeros_rojos,
+        "deficit": Deficit} 
     else:
         establecer_presupuesto()
         return obtener_presupuesto()
 
-########################################### AARON
-    
 def guardar_presupuesto(valor):
     with open(PRESUPUESTO_FILE, "w") as archivo:
         archivo.write(str(valor))

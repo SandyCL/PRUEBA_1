@@ -22,8 +22,15 @@
     </article>
     <article class="stat-card">
         <span>Porcentaje gastado</span>
-        <strong>{{ "{:,.2f}".format(pm.porcentaje) }}%
+        <strong>{{ "{:,.2f}".format(pm.porcentaje) }}%</strong>
+    </article>
+</section>
 
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; margin: 30px 0;">
+    <img src="{{ url_for('static', filename='img/Analisis_de_presupuesto.png') }}" 
+         style="max-width: 600px; width: 100%; height: auto; border-radius: 8px; display: block;" 
+         alt="Gráfico de Presupuesto">
+</div>
 <script>
 function confirmarCambio() {
     let respuesta = confirm("¿Desea cambiar su presupuesto?");
@@ -69,5 +76,14 @@ function editarPresupuesto() {
 
     }
 }
+</script>
+<script>
+window.onload = function() {
+    let enNumerosRojos = "{{ numeros_rojos }}".toLowerCase()==='true';
+
+     if (enNumerosRojos) {
+        window.location.href = "/numeros_rojos";
+    }
+};
 </script>
 {% endblock %}

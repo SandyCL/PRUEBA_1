@@ -121,8 +121,20 @@ p {
     font-size: 14px;
 }
 
+.stat-card .spanred {
+    display: block;
+    margin-bottom: 8px;
+    color: #E37971;
+    font-size: 14px;
+}
+
 .stat-card strong {
     font-size: 26px;
+}
+
+.stat-card .strongred {
+    font-size: 26px;
+    color: #E37971;
 }
 
 .panel {

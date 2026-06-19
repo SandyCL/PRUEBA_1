@@ -13,7 +13,6 @@ from app.services import (
     actualizar_gasto,
     obtener_presupuesto,
     guardar_presupuesto
-    
 )
 
 
@@ -30,11 +29,13 @@ def index():
 
 @main.route("/gastos/nuevo", methods=["GET", "POST"])
 def nuevo_gasto():
+    presupuesto_mes = obtener_presupuesto()
+    numeros_rojos = presupuesto_mes["rojo"]
     if request.method == "POST":
         if not validar_campos_completos(request.form["fecha"], request.form["categoria"], request.form["descripcion"], request.form["monto"]):
-            return render_template("nuevo_gasto.html", error="Por favor llene todos los campos.")
+            return render_template("nuevo_gasto.html", error="Por favor llene todos los campos.",numeros_rojos=numeros_rojos)
         if not verificar_monto_positivo(request.form["monto"]):
-            return render_template("nuevo_gasto.html", error="El monto debe ser un número positivo.")
+            return render_template("nuevo_gasto.html", error="El monto debe ser un número positivo.",numeros_rojos=numeros_rojos)
 
         agregar_gasto(
             fecha=request.form["fecha"],
@@ -44,7 +45,7 @@ def nuevo_gasto():
         )
         return redirect(url_for("main.gastos"))
 
-    return render_template("nuevo_gasto.html")
+    return render_template("nuevo_gasto.html",numeros_rojos=numeros_rojos)
 
 
 @main.route("/buscar")
@@ -139,6 +140,8 @@ def eliminar_gasto_route(id):
 
 @main.route("/gastos/editar/<int:id>", methods=["GET", "POST"])
 def editar_gasto(id):
+    presupuesto_mes = obtener_presupuesto()
+    numeros_rojos = presupuesto_mes["rojo"]
     gastos = cargar_gastos()
     gasto = gastos[gastos["id"] == id].iloc[0]
 
@@ -152,7 +155,7 @@ def editar_gasto(id):
         )
         return redirect(url_for("main.gastos"))
 
-    return render_template("editar_gasto.html", gasto=gasto)
+    return render_template("editar_gasto.html", gasto=gasto,numeros_rojos=numeros_rojos)
 
 
 from datetime import datetime
@@ -190,7 +193,8 @@ def filtrar_gastos_route():
 @main.route("/presupuesto")
 def presupuesto_mensual():
     presupuesto_mes = obtener_presupuesto()
-    return render_template("presupuesto.html", pm=presupuesto_mes)
+    numeros_rojos = presupuesto_mes["rojo"]
+    return render_template("presupuesto.html", pm=presupuesto_mes, numeros_rojos=numeros_rojos)
 
 @main.route("/actualizar_presupuesto", methods=["POST"])
 def actualizar_presupuesto():
@@ -200,4 +204,10 @@ def actualizar_presupuesto():
     guardar_presupuesto(nuevo_presupuesto)
 
     return "OK"
+
+@main.route("/numeros_rojos")
+def numeros_rojos_vista():
+    presupuesto_mes = obtener_presupuesto()
+    numeros_rojos = presupuesto_mes["rojo"]
+    return render_template("NumerosRojos.html", pm=presupuesto_mes, numeros_rojos=numeros_rojos)
 #################################################### Aaron arriba

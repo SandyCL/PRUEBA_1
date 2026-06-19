@@ -35,4 +35,14 @@
         <button class="button" type="submit">Guardar cambios</button>
     </div>
 </form>
+<script>
+window.onload = function() {
+    let enNumerosRojos = "{{ numeros_rojos }}".toLowerCase()==='true';
+
+    if (enNumerosRojos) {
+        alert("Has excedido el presupuesto límite establecido (La cuenta está en números rojos).");
+        window.location.href = "/";
+    }
+};
+</script>
 {% endblock %}
